@@ -102,7 +102,7 @@ for i in range(epoch):
         input_ids = inputs.pop("input_ids")
         input_embeddings = model.base_model.model.model.embed_tokens(input_ids)
         dims = torch.tensor(input_embeddings.size(1) * input_embeddings.size(2))
-        mag_norm = neftune_noise_alpha / torch.sqrt(dims)
+        mag_norm = neftune_noise_alpha / torch.sqrt(dims)  # 使不同长度的序列和其对应的添加了噪声后的序列的长度相同
         input_embeddings = input_embeddings + torch.zeros_like(input_embeddings).uniform_(-mag_norm, mag_norm)
         inputs["inputs_embeds"] = input_embeddings
         inputs = {k: v.to("cuda") for k, v in inputs.items()}
